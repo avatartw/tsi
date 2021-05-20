@@ -6,7 +6,7 @@ on:
    push:
    gollum:
    schedule:
-       - cron: '30 22 * * *'
+       - cron: '08 18 * * *'
 
 jobs:
   TSI:
