@@ -1,4 +1,4 @@
-# 每天8:08执行
+# 每天7:08执行
 
 name: Start
 
@@ -6,7 +6,7 @@ on:
    push:
    gollum:
    schedule:
-       - cron: '08 0 * * *'
+       - cron: '08 23 * * *'
 
 jobs:
   TSI:
