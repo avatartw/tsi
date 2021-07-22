@@ -1,4 +1,4 @@
-name: Authorization Checker
+name: Trigger
 on:
   workflow_dispatch:
   schedule:
