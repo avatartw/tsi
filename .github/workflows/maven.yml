@@ -4,6 +4,7 @@ name: Start
 
 on:
    gollum:
+   workflow_dispatch:
    schedule:
        - cron: '08 23 * * *'
 
