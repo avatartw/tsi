@@ -19,6 +19,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Create local change
+      run: |
+        date +%s > run.txt
     - name: Cache local Maven repository
       uses: actions/cache@v2
       with:
@@ -32,9 +35,6 @@ jobs:
         SCKEY: ${{ secrets.SCKEY }}
       run: |
         mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
-    - name: Create local change
-      run: |
-        date +%s > "~/.m2/repository/run.txt"
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
