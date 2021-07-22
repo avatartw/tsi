@@ -35,6 +35,7 @@ jobs:
         SCKEY: ${{ secrets.SCKEY }}
       run: |
         mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
+    - uses: actions/checkout@v2
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
