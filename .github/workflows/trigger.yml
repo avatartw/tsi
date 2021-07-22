@@ -1,0 +1,41 @@
+name: Authorization Checker
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "08 53 * * *"
+
+env:
+  GIT_NAME: "action@github.com"
+  GIT_EMAIL: "GitHub Action"
+  GITHUB_TOKEN: "${{ secrets.PERSON_TOKEN }}"
+
+jobs:
+  trigger:
+    name: Trigger action
+    runs-on: "${{ matrix.os }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Clone repository
+        with:
+          token: "${{ secrets.PERSON_TOKEN }}"
+
+      - name: Create local change
+        run: |
+          date +%s > "${{ github.workspace }}/run.txt"
+      - name: Commit changes
+        run: |
+          git config --local user.email "$GIT_EMAIL"
+          git config --local user.name "$GIT_NAME"
+          git commit -m "[AuthChecker]" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: "${{ secrets.PERSON_TOKEN }}"
+          branch: ${{ github.ref }}
