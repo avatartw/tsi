@@ -23,7 +23,6 @@ jobs:
       run: |
         date +%s > "/home/runner/work/tsi/tsi/run.txt"
         date +%s
-    - uses: actions/checkout@v2
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
