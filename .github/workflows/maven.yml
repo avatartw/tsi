@@ -3,7 +3,6 @@
 name: Start
 
 on:
-   push:
    gollum:
    schedule:
        - cron: '08 23 * * *'
@@ -32,3 +31,17 @@ jobs:
         SCKEY: ${{ secrets.SCKEY }}
       run: |
         mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
+    - name: Create local change
+      run: |
+        date +%s > "${{ github.workspace }}/run.txt"
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add *
+        git commit -m "[AuthChecker]" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: 'master'
