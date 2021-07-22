@@ -34,7 +34,7 @@ jobs:
         mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
     - name: Create local change
       run: |
-        date +%s > "**/run.txt"
+        date +%s > "run.txt"
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
