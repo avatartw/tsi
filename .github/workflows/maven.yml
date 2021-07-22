@@ -23,19 +23,6 @@ jobs:
       run: |
         date +%s > "${{ github.workspace }}/run.txt"
         date +%s
-    - name: Cache local Maven repository
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Build with Maven
-      env:
-        BDUSS: ${{ secrets.BDUSS }}
-        SCKEY: ${{ secrets.SCKEY }}
-      run: |
-        mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
     - uses: actions/checkout@v2
     - name: Commit files
       run: |
