@@ -8,6 +8,11 @@ on:
    schedule:
        - cron: '08 23 * * *'
 
+env:
+  GIT_NAME: "action@github.com"
+  GIT_EMAIL: "GitHub Action"
+  GITHUB_TOKEN: "${{ secrets.PERSON_TOKEN }}"
+
 jobs:
   TSI:
 
