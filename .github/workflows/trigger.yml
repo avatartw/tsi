@@ -2,7 +2,7 @@ name: Authorization Checker
 on:
   workflow_dispatch:
   schedule:
-    - cron: "08 53 * * *"
+    - cron: "53 23 * * *"
 
 env:
   GIT_NAME: "action@github.com"
