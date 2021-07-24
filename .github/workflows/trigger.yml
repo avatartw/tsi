@@ -5,8 +5,8 @@ on:
     - cron: "53 23 * * *"
 
 env:
-  GIT_NAME: "action@github.com"
-  GIT_EMAIL: "GitHub Action"
+  GIT_NAME: "GitHub Action"
+  GIT_EMAIL: "action@github.com"
   GITHUB_TOKEN: "${{ secrets.PERSON_TOKEN }}"
 
 jobs:
