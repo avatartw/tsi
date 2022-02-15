@@ -15,20 +15,20 @@ import org.slf4j.LoggerFactory;
 import top.srcrs.domain.Cookie;
 
 /**
- * 封装的网络请求请求工具类
+ * 封裝的網絡請求請求工具類
  * @author srcrs
  * @Time 2020-10-31
  */
 public class Request {
-    /** 获取日志记录器对象 */
+    /** 獲取日誌記錄器對象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(Request.class);
-    /** 获取Cookie对象 */
+    /** 獲取Cookie對象 */
     private static Cookie cookie = Cookie.getInstance();
     private Request(){};
 
     /**
-     * 发送get请求
-     * @param url 请求的地址，包括参数
+     * 發送get請求
+     * @param url 請求的地址，包括參數
      * @return JSONObject
      * @author srcrs
      * @Time 2020-10-31
@@ -41,7 +41,7 @@ public class Request {
         httpGet.addHeader("connection","keep-alive");
         httpGet.addHeader("Content-Type","application/x-www-form-urlencoded");
         httpGet.addHeader("charset","UTF-8");
-        httpGet.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36");
+        httpGet.addHeader("User-Agent","bdtb for Android 12.19.1.0");
         httpGet.addHeader("Cookie",cookie.getCookie());
         HttpResponse resp = null;
         String respContent = null;
@@ -55,16 +55,16 @@ public class Request {
             }
             respContent = EntityUtils.toString(entity, "UTF-8");
         } catch (Exception e){
-            LOGGER.info("get请求错误 -- "+e);
+            LOGGER.info("get請求錯誤 -- "+e);
         } finally {
             return JSONObject.parseObject(respContent);
         }
     }
 
     /**
-     * 发送post请求
-     * @param url 请求的地址
-     * @param body 携带的参数
+     * 發送post請求
+     * @param url 請求的地址
+     * @param body 攜帶的參數
      * @return JSONObject
      * @author srcrs
      * @Time 2020-10-31
@@ -78,7 +78,7 @@ public class Request {
         httpPost.addHeader("Host","tieba.baidu.com");
         httpPost.addHeader("Content-Type","application/x-www-form-urlencoded");
         httpPost.addHeader("charset","UTF-8");
-        httpPost.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36");
+        httpPost.addHeader("User-Agent","bdtb for Android 12.19.1.0");
         httpPost.addHeader("Cookie",cookie.getCookie());
         httpPost.setEntity(entityBody);
         HttpResponse resp = null;
@@ -93,11 +93,10 @@ public class Request {
             }
             respContent = EntityUtils.toString(entity, "UTF-8");
         } catch (Exception e){
-            LOGGER.info("post请求错误 -- "+e);
+            LOGGER.info("post請求錯誤 -- "+e);
         }
         finally {
             return JSONObject.parseObject(respContent);
         }
     }
 }
-
