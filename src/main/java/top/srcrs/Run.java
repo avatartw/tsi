@@ -17,49 +17,49 @@ import top.srcrs.util.Request;
 import java.util.*;
 
 /**
- * 程序运行开始的地方
+ * 程序執行開始的地方
  * @author srcrs
  * @Time 2020-10-31
  */
 public class Run
 {
-    /** 获取日志记录器对象 */
+    /** 獲取日誌記錄器對象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(Run.class);
 
-    /** 获取用户所有关注贴吧 */
+    /** 獲取使用者所有關注貼吧 */
     String LIKE_URL = "https://tieba.baidu.com/mo/q/newmoindex";
-    /** 获取用户的tbs */
+    /** 獲取使用者的tbs */
     String TBS_URL = "http://tieba.baidu.com/dc/common/tbs";
-    /** 贴吧签到接口 */
+    /** 貼吧簽到接口 */
     String SIGN_URL = "http://c.tieba.baidu.com/c/c/forum/sign";
 
-    /** 存储用户所关注的贴吧 */
+    /** 儲存使用者所關注的貼吧 */
     private List<String> follow = new ArrayList<>();
-    /** 签到成功的贴吧列表 */
+    /** 簽到成功的貼吧列表 */
     private static List<String>  success = new ArrayList<>();
-    /** 用户的tbs */
+    /** 使用者的tbs */
     private String tbs = "";
-    /** 用户所关注的贴吧数量 */
+    /** 使用者所關注的貼吧數量 */
     private static Integer followNum = 201;
     public static void main( String[] args ){
         Cookie cookie = Cookie.getInstance();
-        // 存入Cookie，以备使用
+        // 存入Cookie，以備使用
         if(args.length==0){
-            LOGGER.warn("请在Secrets中填写BDUSS");
+            LOGGER.warn("請在Secrets中填寫BDUSS");
         }
         cookie.setBDUSS(args[0]);
         Run run = new Run();
         run.getTbs();
         run.getFollow();
         run.runSign();
-        LOGGER.info("共 {} 个贴吧 - 成功: {} - 失败: {}",followNum,success.size(),followNum-success.size());
+        LOGGER.info("共 {} 個貼吧 - 成功: {} - 失敗: {}",followNum,success.size(),followNum-success.size());
         if(args.length == 2){
             run.send(args[1]);
         }
     }
 
     /**
-     * 进行登录，获得 tbs ，签到的时候需要用到这个参数
+     * 進行登錄，獲得 tbs ，簽到的時候需要用到這個參數
      * @author srcrs
      * @Time 2020-10-31
      */
@@ -67,55 +67,55 @@ public class Run
         try{
             JSONObject jsonObject = Request.get(TBS_URL);
             if("1".equals(jsonObject.getString("is_login"))){
-                LOGGER.info("获取tbs成功");
+                LOGGER.info("獲取tbs成功");
                 tbs = jsonObject.getString("tbs");
             } else{
-                LOGGER.warn("获取tbs失败 -- " + jsonObject);
+                LOGGER.warn("獲取tbs失敗 -- " + jsonObject);
             }
         } catch (Exception e){
-            LOGGER.error("获取tbs部分出现错误 -- " + e);
+            LOGGER.error("獲取tbs部分出現錯誤 -- " + e);
         }
     }
 
     /**
-     * 获取用户所关注的贴吧列表
+     * 獲取使用者所關注的貼吧列表
      * @author srcrs
      * @Time 2020-10-31
      */
     public void getFollow(){
         try{
             JSONObject jsonObject = Request.get(LIKE_URL);
-            LOGGER.info("获取贴吧列表成功");
+            LOGGER.info("獲取貼吧列表成功");
             JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("like_forum");
             followNum = jsonArray.size();
-            // 获取用户所有关注的贴吧
+            // 獲取使用者所有關注的貼吧
             for (Object array : jsonArray) {
                 if("0".equals(((JSONObject) array).getString("is_sign"))){
-                    // 将为签到的贴吧加入到 follow 中，待签到
+                    // 將為簽到的貼吧加入到 follow 中，待簽到
                     follow.add(((JSONObject) array).getString("forum_name").replace("+","%2B"));
                 } else{
-                    // 将已经成功签到的贴吧，加入到 success
+                    // 將已經成功簽到的貼吧，加入到 success
                     success.add(((JSONObject) array).getString("forum_name"));
                 }
             }
         } catch (Exception e){
-            LOGGER.error("获取贴吧列表部分出现错误 -- " + e);
+            LOGGER.error("獲取貼吧列表部分出現錯誤 -- " + e);
         }
     }
 
     /**
-     * 开始进行签到，每一轮性将所有未签到的贴吧进行签到，一共进行5轮，如果还未签到完就立即结束
-     * 一般一次只会有少数的贴吧未能完成签到，为了减少接口访问次数，每一轮签到完等待1分钟，如果在过程中所有贴吧签到完则结束。
+     * 開始進行簽到，每一輪性將所有未簽到的貼吧進行簽到，一共進行5輪，如果還未簽到完就立即結束
+     * 一般一次只會有少數的貼吧未能完成簽到，為了減少接口訪問次數，每一輪簽到完等待1分鐘，如果在過程中所有貼吧簽到完則結束。
      * @author srcrs
      * @Time 2020-10-31
      */
     public void runSign(){
-        // 当执行 5 轮所有贴吧还未签到成功就结束操作
+        // 當執行 5 輪所有貼吧還未簽到成功就結束操作
         Integer flag = 5;
         try{
             while(success.size()<followNum&&flag>0){
-                LOGGER.info("-----第 {} 轮签到开始-----", 5 - flag + 1);
-                LOGGER.info("还剩 {} 贴吧需要签到", followNum - success.size());
+                LOGGER.info("-----第 {} 輪簽到開始-----", 5 - flag + 1);
+                LOGGER.info("還剩 {} 貼吧需要簽到", followNum - success.size());
                 Iterator<String> iterator = follow.iterator();
                 while(iterator.hasNext()){
                     String s = iterator.next();
@@ -123,42 +123,44 @@ public class Run
                     String body = "kw="+s+"&tbs="+tbs+"&sign="+ Encryption.enCodeMd5("kw="+rotation+"tbs="+tbs+"tiebaclient!!!");
                     JSONObject post = Request.post(SIGN_URL, body);
                     if("0".equals(post.getString("error_code"))){
+                        Integer sign_bonus_point = post.getJSONObject("user_info").getInteger("sign_bonus_point");
+                        Integer user_sign_rank = post.getJSONObject("user_info").getInteger("user_sign_rank");
                         iterator.remove();
                         success.add(rotation);
-                        LOGGER.info(rotation + ": " + "签到成功");
+                        LOGGER.info(rotation + ": " + "簽到成功，經驗值加{}，你是今天第{}個簽到的", sign_bonus_point, user_sign_rank);
                     } else {
-                        LOGGER.warn(rotation + ": " + "签到失败");
+                        LOGGER.warn(rotation + ": " + "簽到失敗");
                     }
                 }
                 if (success.size() != followNum){
-                    // 为防止短时间内多次请求接口，触发风控，设置每一轮签到完等待 5 分钟
+                    // 為防止短時間內多次請求接口，觸發風控，設定每一輪簽到完等待 5 分鐘
                     Thread.sleep(1000 * 60 * 5);
                     /**
-                     * 重新获取 tbs
-                     * 尝试解决以前第 1 次签到失败，剩余 4 次循环都会失败的错误。
+                     * 重新獲取 tbs
+                     * 嘗試解決以前第 1 次簽到失敗，賸餘 4 次循環都會失敗的錯誤。
                      */
                     getTbs();
                 }
                 flag--;
             }
         } catch (Exception e){
-            LOGGER.error("签到部分出现错误 -- " + e);
+            LOGGER.error("簽到部分出現錯誤 -- " + e);
         }
     }
 
     /**
-     * 发送运行结果到微信，通过 server 酱
+     * 發送執行結果到微信，通過 server 醬
      * @param sckey
      * @author srcrs
      * @Time 2020-10-31
      */
     public void send(String sckey){
-        /** 将要推送的数据 */
-        String text = "总: "+ followNum + " - ";
-        text += "成功: " + success.size() + " 失败: " + (followNum - success.size());
-        String desp = "共 "+ followNum + " 贴吧\n\n";
-        desp += "成功: " + success.size() + " 失败: " + (followNum - success.size());
-        String body = "text="+text+"&desp="+"TiebaSignIn运行结果\n\n"+desp;
+        /** 將要推送的資料 */
+        String text = "總: "+ followNum + " - ";
+        text += "成功: " + success.size() + " 失敗: " + (followNum - success.size());
+        String desp = "共 "+ followNum + " 貼吧\n\n";
+        desp += "成功: " + success.size() + " 失敗: " + (followNum - success.size());
+        String body = "text="+text+"&desp="+"TiebaSignIn執行結果\n\n"+desp;
         StringEntity entityBody = new StringEntity(body,"UTF-8");
         HttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("https://sc.ftqq.com/"+sckey+".send");
@@ -175,9 +177,9 @@ public class Run
                 entity = resp.getEntity();
             }
             respContent = EntityUtils.toString(entity, "UTF-8");
-            LOGGER.info("server酱推送正常");
+            LOGGER.info("server醬推送正常");
         } catch (Exception e){
-            LOGGER.error("server酱发送失败 -- " + e);
+            LOGGER.error("server醬發送失敗 -- " + e);
         }
     }
 }
