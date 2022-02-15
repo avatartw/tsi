@@ -6,7 +6,7 @@ on:
    gollum:
    workflow_dispatch:
    schedule:
-       - cron: '08 23 * * *'
+       - cron: '08 11,23 * * *'
 
 jobs:
   TSI:
