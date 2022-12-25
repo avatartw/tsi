@@ -129,7 +129,7 @@ public class Run
                         Integer total_sign_num = jsonObject.getJsonObject("user_info").getInteger("total_sign_num");
                         Integer miss_sign_num = jsonObject.getJsonObject("user_info").getInteger("miss_sign_num");
                         iterator.remove();
-                        success.add(rotation);連續簽到：375天  累計簽到：715天
+                        success.add(rotation);
                         LOGGER.info(rotation + ": " + "簽到成功，經驗 +{}，今日本吧第 {} 個簽到，連續簽到：{}天，累計簽到：{}天，漏簽：{}天", sign_bonus_point, user_sign_rank, cont_sign_num, total_sign_num, miss_sign_num);
                     } else {
                         LOGGER.warn(rotation + ": " + "簽到失敗");
